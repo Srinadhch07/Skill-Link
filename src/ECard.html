@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Link - Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .welcome-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            z-index: 1000;
+            transition: transform 0.8s ease-in-out;
+            padding: 1rem;
+        }
+
+        .welcome-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transform: scale(0);
+            animation: scaleIn 0.5s ease forwards;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .envelope-icon {
+            font-size: clamp(3rem, 5vw, 4rem);
+            color: #4F46E5;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        .welcome-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: #1F2937;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards 0.5s;
+        }
+
+        .button {
+            padding: 0.8rem 2rem;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            background: #4F46E5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards 1s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background: #4338CA;
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            padding: clamp(1rem, 4vw, 2rem);
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #1F2937;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #4F46E5;
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .section-title.visible::after {
+            transform: scaleX(1);
+        }
+
+        .content-text {
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            line-height: 1.8;
+            color: #4B5563;
+            margin-bottom: 2rem;
+        }
+
+        .services-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .services-list li {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transform: translateX(-20px);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .services-list li.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 4rem 0;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .cta-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .cta-button {
+            padding: 1rem 3rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            background: #4F46E5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+
+        .cta-button:hover {
+            background: #4338CA;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(79, 70, 229, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .services-list li {
+                padding: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .cta-section {
+                margin: 2rem 0;
+                padding: 1rem;
+            }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container" id="welcomeScreen">
+        <div class="welcome-card">
+            <div class="envelope-icon">✉️</div>
+            <h1 class="welcome-title">Welcome to Skill Link</h1>
+            <button class="button" id="continueBtn">Continue</button>
+        </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <section class="section">
+            <h2 class="section-title">About Skill Link</h2>
+            <div class="content-text">
+                <p>Skill Link is a revolutionary platform designed to harness the untapped potential within our student community. Built on the principles of collaboration, creativity, and empowerment, our mission is to create an ecosystem where every skill finds its purpose, and every talent meets its opportunity.</p>
+                
+                <p>At Skill Link, we connect individuals with unique abilities to those who need their expertise through a streamlined, user-friendly platform. Our services span five key categories:</p>
+                
+                <ul class="services-list">
+                    <li>Academic and Career Development: Offering assistance with tasks such as resume building, career counseling, and academic tutoring to help students and professionals achieve their goals.</li>
+                    <li>Creative & Personalized Services: Delivering custom-made items like keychains, T-shirts, and photo frames that add a personal touch to every occasion.</li>
+                    <li>Social and Event Services: Coordinating and managing events with services like photography, decoration, and event planning to make memorable moments truly extraordinary.</li>
+                    <li>Tech & Digital Services: Providing solutions like graphic design, website creation, and digital marketing to help businesses and individuals stand out in the digital world.</li>
+                    <li>Others: Catering to unique, niche requests that fall beyond the conventional categories, ensuring we meet every need with precision and care.</li>
+                </ul>
+                
+                <p>Our platform operates on a peer-to-peer model, supported by a dedicated team that ensures smooth coordination between associates (service providers) and clients (students, teachers, and beyond). Through this model, we not only create value for our users but also empower associates to monetize their skills and build a strong professional network.</p>
+                
+                <p>Skill Link is more than just a service provider—it's a movement to unlock potential and foster growth. Whether you're seeking assistance or looking to showcase your abilities, we are here to support your journey every step of the way. With us, your skills are not just talents—they are opportunities waiting to be explored.</p>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <a href="https://skill-link.odoo.com" class="cta-button">
+                Explore Our Platform
+            </a>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const mainContent = document.getElementById('mainContent');
+            const continueBtn = document.getElementById('continueBtn');
+            const sections = document.querySelectorAll('.section');
+            const sectionTitles = document.querySelectorAll('.section-title');
+            const serviceItems = document.querySelectorAll('.services-list li');
+            const ctaSection = document.querySelector('.cta-section');
+
+            continueBtn.addEventListener('click', () => {
+                welcomeScreen.style.transform = 'translateY(-100%)';
+                setTimeout(() => {
+                    mainContent.classList.add('visible');
+                    animateSections();
+                }, 800);
+            });
+
+            function animateSections() {
+                sections.forEach((section, index) => {
+                    setTimeout(() => {
+                        section.classList.add('visible');
+                        sectionTitles[index].classList.add('visible');
+                    }, index * 200);
+                });
+
+                serviceItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.classList.add('visible');
+                    }, (index + 1) * 200);
+                });
+
+                setTimeout(() => {
+                    ctaSection.classList.add('visible');
+                }, (serviceItems.length + 1) * 200);
+            }
+
+            // Intersection Observer for scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.section, .services-list li, .cta-section').forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
